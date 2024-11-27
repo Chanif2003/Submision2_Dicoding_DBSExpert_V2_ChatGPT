@@ -4,16 +4,29 @@
 ## **1. Project Overview**
 
 ### **Latar Belakang**
-Sistem rekomendasi telah menjadi bagian penting dari kehidupan digital, membantu pengguna memilih konten yang relevan di tengah banyaknya pilihan. Dalam industri film, sistem ini membantu meningkatkan pengalaman pengguna dengan menyarankan film yang relevan berdasarkan minat mereka atau pola perilaku pengguna serupa.
+Dalam era digital, pengguna sering menghadapi masalah dalam memilih konten yang relevan di tengah banyaknya pilihan yang tersedia. Dalam industri film, jumlah film yang terus bertambah setiap tahunnya membuat pengguna kesulitan menemukan film yang sesuai dengan minat mereka. Tanpa sistem rekomendasi, pengguna sering kali harus bergantung pada pencarian manual atau ulasan yang tidak selalu mencerminkan preferensi pribadi.
 
-Dua pendekatan utama yang digunakan adalah **Content-Based Filtering** dan **Collaborative Filtering**:
-- **Content-Based Filtering** bekerja dengan mencocokkan fitur dari item (misalnya genre, sinopsis, atau kata kunci) untuk memberikan rekomendasi.
-- **Collaborative Filtering** bekerja dengan memanfaatkan data perilaku pengguna untuk menemukan pola kesamaan antara pengguna atau item.
+Masalah ini menjadi semakin relevan karena:
+1. **Ledakan Data**: Industri hiburan memproduksi jutaan konten setiap tahun.
+2. **Efisiensi Waktu**: Pengguna tidak memiliki waktu untuk mengeksplorasi semua opsi yang tersedia secara manual.
+3. **Pengalaman Pengguna**: Tanpa personalisasi, pengguna sering merasa tidak puas dengan rekomendasi generik.
+
+Sistem rekomendasi menawarkan solusi dengan memberikan saran personal yang relevan berdasarkan data historis pengguna dan karakteristik konten.
+
+### **Masalah yang Dihadapi**
+1. **Ketidakmampuan Sistem Generik**: Rekomendasi berbasis popularitas tidak mempertimbangkan preferensi unik pengguna.
+2. **Keterbatasan Data Perilaku**: Tidak semua pengguna memiliki riwayat perilaku yang cukup untuk mendukung rekomendasi berbasis Collaborative Filtering.
+3. **Kesalahan dalam Pemahaman Konteks**: Sistem rekomendasi tradisional sering gagal memahami konteks atau hubungan antara konten berdasarkan deskripsi tekstual.
 
 ### **Tujuan Proyek**
-1. Membangun sistem rekomendasi film yang efektif dengan menggunakan gabungan Content-Based dan Collaborative Filtering.
-2. Mengoptimalkan akurasi model dengan tuning hyperparameter pada TF-IDF.
-3. Mengevaluasi kinerja model dengan metrik evaluasi yang relevan seperti Precision@K dan Recall@K.
+1. Membangun sistem rekomendasi yang efektif dengan menggabungkan pendekatan **Content-Based Filtering** dan **Collaborative Filtering**.
+2. Menyediakan rekomendasi yang personal dan relevan bagi pengguna.
+3. Mengoptimalkan akurasi rekomendasi melalui tuning hyperparameter, seperti pada TF-IDF.
+
+### **Manfaat Proyek**
+1. **Meningkatkan Pengalaman Pengguna**: Rekomendasi yang lebih relevan meningkatkan kepuasan pengguna.
+2. **Efisiensi Waktu**: Membantu pengguna menemukan film yang sesuai tanpa harus mencari secara manual.
+3. **Potensi Bisnis**: Sistem rekomendasi yang efektif dapat meningkatkan keterlibatan pengguna, yang pada akhirnya berdampak positif pada metrik bisnis seperti retensi pelanggan.
 
 ---
 
@@ -42,24 +55,71 @@ Dua pendekatan utama yang digunakan adalah **Content-Based Filtering** dan **Col
 
 ---
 
-## **3. Data Understanding**
+# Hasil Exploratory Data Analysis (EDA)
 
-### **Dataset**
-Dataset yang digunakan:
-1. **TMDB 5000 Movies** - Data deskripsi film.
-2. **TMDB 5000 Ratings** - Data rating pengguna terhadap film.
+## 1. DataFrame Pertama
+### Informasi Umum:
+- **Jumlah Baris dan Kolom**: 4602 baris, 21 kolom.
+- **Deskripsi Kolom**:
+  - `budget`: Anggaran film (tipe data *int64*).
+  - `genres`: Genre film (tipe data *object*).
+  - `homepage`: URL halaman utama film (hanya 1658 nilai yang terisi, banyak *missing values*).
+  - `id`: ID unik film (tipe data *int64*).
+  - `keywords`: Kata kunci terkait film (tipe data *object*).
+  - `original_language`: Bahasa asli film (tipe data *object*).
+  - `popularity`: Popularitas film (tipe data *float64*).
+  - `revenue`: Pendapatan film (tipe data *int64*).
+  - `runtime`: Durasi film (tipe data *float64*).
+  - `vote_average`: Rata-rata rating (tipe data *float64*).
+  - `tagline`: Slogan film (banyak *missing values*, hanya 3875 nilai terisi).
+  - **Kolom lainnya**: Informasi terkait produksi, bahasa, dan tanggal rilis.
+- **Memory Usage**: 755.1 KB.
+- **Catatan**:
+  Dataset ini cocok untuk analisis:
+  - Genre populer.
+  - Hubungan antara anggaran (`budget`) dan pendapatan (`revenue`).
+  - Analisis temporal berdasarkan `release_date`.
 
-### **Informasi Data**
-- **TMDB 5000 Movies**:
-  - `title`: Judul film.
-  - `overview`: Sinopsis film.
-  - `genres`: Daftar genre film.
-  - `keywords`: Kata kunci terkait film.
+---
 
-- **TMDB 5000 Ratings**:
-  - `userId`: ID pengguna.
-  - `movieId`: ID film.
-  - `rating`: Rating yang diberikan oleh pengguna.
+## 2. DataFrame Kedua
+### Informasi Umum:
+- **Jumlah Baris dan Kolom**: 5.000.000 baris, 3 kolom.
+- **Deskripsi Kolom**:
+  - `userId`: ID pengguna yang memberikan rating (tipe data *int64*).
+  - `movieId`: ID film yang diberi rating (tipe data *int64*).
+  - `rating`: Nilai rating yang diberikan pengguna (tipe data *float64*).
+- **Memory Usage**: 114.4 MB.
+- **Catatan**:
+  Dataset ini sangat penting untuk analisis rekomendasi film, seperti:
+  - Sistem rekomendasi berbasis *collaborative filtering*.
+  - Analisis preferensi pengguna terhadap film.
+
+---
+
+## 3. DataFrame Ketiga
+### Informasi Umum:
+- **Jumlah Baris dan Kolom**: 4602 baris, 3 kolom.
+- **Deskripsi Kolom**:
+  - `id`: ID unik yang mengacu pada film tertentu (tipe data *int64*).
+  - `cast`: Informasi tentang pemain dalam bentuk teks atau string (tipe data *object*).
+  - `crew`: Informasi tentang kru produksi dalam bentuk teks atau string (tipe data *object*).
+- **Memory Usage**: 108 KB.
+- **Catatan**:
+  Dataset ini relevan untuk analisis:
+  - Kolaborasi aktor dalam film.
+  - Hubungan antara kru produksi dengan keberhasilan film.
+  - *Social network analysis* di industri perfilman.
+
+---
+
+## Kesimpulan
+- **Dataset Pertama**: Fokus pada informasi deskriptif film, cocok untuk analisis hubungan variabel seperti `budget`, `revenue`, dan genre.
+- **Dataset Kedua**: Sangat besar dan cocok untuk membangun sistem rekomendasi film berdasarkan interaksi pengguna.
+- **Dataset Ketiga**: Berguna untuk analisis pemain dan kru, termasuk kolaborasi dan keterlibatan mereka dalam film dengan rating tinggi.
+
+Jika ingin analisis lebih lanjut atau visualisasi data, silakan arahkan eksplorasi yang diinginkan!
+
 
 ---
 
