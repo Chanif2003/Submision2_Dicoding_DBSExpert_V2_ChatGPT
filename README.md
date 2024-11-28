@@ -55,7 +55,11 @@ Sistem rekomendasi menawarkan solusi dengan memberikan saran personal yang relev
 
 ---
 
-# Hasil Exploratory Data Analysis (EDA)
+## Hasil Exploratory Data Analysis (EDA)
+
+Tautan sumber dataset:
+[TMDB 5000 Movie Dataset with Ratings on Kaggle](https://www.kaggle.com/datasets/aayushsoni4/tmdb-5000-movie-dataset-with-ratings)
+
 
 ## 1. DataFrame Pertama
 ### Informasi Umum:
