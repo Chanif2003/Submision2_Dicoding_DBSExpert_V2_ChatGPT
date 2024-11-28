@@ -55,106 +55,216 @@ Sistem rekomendasi menawarkan solusi dengan memberikan saran personal yang relev
 
 ---
 
-## Hasil Exploratory Data Analysis (EDA)
+## Data Understanding
 
-Tautan sumber dataset:
+### Tautan sumber dataset:
 [TMDB 5000 Movie Dataset with Ratings on Kaggle](https://www.kaggle.com/datasets/aayushsoni4/tmdb-5000-movie-dataset-with-ratings)
 
+### Uraian Setiap Fitur Data
 
-## 1. DataFrame Pertama
-### Informasi Umum:
-- **Jumlah Baris dan Kolom**: 4602 baris, 21 kolom.
-- **Deskripsi Kolom**:
-  - `budget`: Anggaran film (tipe data *int64*).
-  - `genres`: Genre film (tipe data *object*).
-  - `homepage`: URL halaman utama film (hanya 1658 nilai yang terisi, banyak *missing values*).
-  - `id`: ID unik film (tipe data *int64*).
-  - `keywords`: Kata kunci terkait film (tipe data *object*).
-  - `original_language`: Bahasa asli film (tipe data *object*).
-  - `popularity`: Popularitas film (tipe data *float64*).
-  - `revenue`: Pendapatan film (tipe data *int64*).
-  - `runtime`: Durasi film (tipe data *float64*).
-  - `vote_average`: Rata-rata rating (tipe data *float64*).
-  - `tagline`: Slogan film (banyak *missing values*, hanya 3875 nilai terisi).
-  - **Kolom lainnya**: Informasi terkait produksi, bahasa, dan tanggal rilis.
-- **Memory Usage**: 755.1 KB.
-- **Catatan**:
-  Dataset ini cocok untuk analisis:
-  - Genre populer.
-  - Hubungan antara anggaran (`budget`) dan pendapatan (`revenue`).
-  - Analisis temporal berdasarkan `release_date`.
+### **Dataset 1 (tmdb_movie_dataset.csv) : Informasi Film**
+1. **`budget`:** Anggaran produksi film dalam satuan mata uang tertentu. (Tipe Data: Integer)
+2. **`genres`:** Daftar genre film (misalnya, Action, Drama). (Tipe Data: Object (teks))
+3. **`homepage`:** URL situs resmi film (jika ada). (Tipe Data: Object (teks))  
+4. **`id`:** ID unik untuk setiap film. (Tipe Data: Integer)
+5. **`keywords` :** Kata kunci terkait film (misalnya, tema atau konsep utama). (Tipe Data: Object (teks))  
+6. **`original_language`:** Bahasa asli film dalam kode ISO 639-1 (misalnya, "en" untuk Inggris). (Tipe Data: Object (teks))  
+7. **`original_title`:** Judul asli film. (Tipe Data: Object (teks))  
+8. **`overview`:** Deskripsi: Sinopsis atau ringkasan cerita film. (Tipe Data: Object (teks))
+9. **`popularity`:** Popularitas film berdasarkan skor tertentu. (Tipe Data: Float)
+10. **`production_companies`:** Daftar perusahaan produksi yang terlibat dalam pembuatan film. (Tipe Data: Object (teks))
+11. **`production_countries`:** Negara-negara tempat film diproduksi. (Tipe Data: Object (teks))
+12. **`release_date`:** Tanggal rilis film. (Tipe Data: Object (teks, format tanggal))
+13. **`revenue`:** Pendapatan total yang dihasilkan film dalam satuan mata uang tertentu. (Tipe Data: Integer)
+14. **`runtime`:** Durasi film dalam menit. (Tipe Data: Float)
+15. **`spoken_languages`:** Daftar bahasa yang digunakan dalam film (dalam kode ISO 639-1). (Tipe Data: Object (teks))
+16. **`status`:** Status produksi film (misalnya, "Released"). (Tipe Data: Object (teks))
+17. **`tagline`:** Tagline atau slogan film. (Tipe Data: Object (teks))
+18. **`title`:** Judul resmi film. (Tipe Data: Object (teks))
+19. **`vote_average`:** Rata-rata nilai rating film dari pengguna. (Tipe Data: Float)
+20. **`vote_count`:** Jumlah total suara pengguna untuk film. (Tipe Data: Integer)
+21. **`ratingId`:** ID yang merepresentasikan entri di sistem penilaian. (Tipe Data: Integer)
 
----
+### **Dataset 2 (tmdb_movie_ratings.csv): Rating Pengguna**
+1. **`userId`:** ID unik pengguna yang memberikan rating. (Tipe Data: Integer)
+2. **`movieId`:** ID unik film yang dirating pengguna. (Tipe Data: Integer)
+3. **`rating`:** Nilai rating yang diberikan pengguna untuk film. (Tipe Data: Float) 
 
-## 2. DataFrame Kedua
-### Informasi Umum:
-- **Jumlah Baris dan Kolom**: 5.000.000 baris, 3 kolom.
-- **Deskripsi Kolom**:
-  - `userId`: ID pengguna yang memberikan rating (tipe data *int64*).
-  - `movieId`: ID film yang diberi rating (tipe data *int64*).
-  - `rating`: Nilai rating yang diberikan pengguna (tipe data *float64*).
-- **Memory Usage**: 114.4 MB.
-- **Catatan**:
-  Dataset ini sangat penting untuk analisis rekomendasi film, seperti:
-  - Sistem rekomendasi berbasis *collaborative filtering*.
-  - Analisis preferensi pengguna terhadap film.
+### **Dataset 3 (tmdb_movie_credits.csv): Cast dan Crew**
+1. **`id`:** ID unik untuk setiap film (sejalan dengan Dataset 1). (Tipe Data: Integer)  
+2. **`cast`:** Daftar aktor yang terlibat dalam film (kemungkinan berbentuk JSON atau string). (Tipe Data: Object (teks))  
+3. **`crew`:** Daftar kru film (misalnya, sutradara, produser, penulis skenario). (Tipe Data: Object (teks))
 
----
-
-## 3. DataFrame Ketiga
-### Informasi Umum:
-- **Jumlah Baris dan Kolom**: 4602 baris, 3 kolom.
-- **Deskripsi Kolom**:
-  - `id`: ID unik yang mengacu pada film tertentu (tipe data *int64*).
-  - `cast`: Informasi tentang pemain dalam bentuk teks atau string (tipe data *object*).
-  - `crew`: Informasi tentang kru produksi dalam bentuk teks atau string (tipe data *object*).
-- **Memory Usage**: 108 KB.
-- **Catatan**:
-  Dataset ini relevan untuk analisis:
-  - Kolaborasi aktor dalam film.
-  - Hubungan antara kru produksi dengan keberhasilan film.
-  - *Social network analysis* di industri perfilman.
-
----
-
-## Kesimpulan
+### Kesimpulan
 - **Dataset Pertama**: Fokus pada informasi deskriptif film, cocok untuk analisis hubungan variabel seperti `budget`, `revenue`, dan genre.
 - **Dataset Kedua**: Sangat besar dan cocok untuk membangun sistem rekomendasi film berdasarkan interaksi pengguna.
 - **Dataset Ketiga**: Berguna untuk analisis pemain dan kru, termasuk kolaborasi dan keterlibatan mereka dalam film dengan rating tinggi.
-
-Jika ingin analisis lebih lanjut atau visualisasi data, silakan arahkan eksplorasi yang diinginkan!
-
 
 ---
 
 ## **4. Data Preparation**
 
-### **Langkah-langkah Data Preparation**
-1. **Parsing Fitur Genre dan Keywords**:
-   - Mengonversi genre dan kata kunci dari format JSON ke teks.
-2. **Preprocessing Teks**:
-   - Membersihkan teks dengan menghapus angka, tanda baca, dan mengonversinya ke huruf kecil.
-3. **Mengkombinasikan Fitur**:
-   - Menggabungkan genre, kata kunci, dan sinopsis menjadi satu kolom `content` untuk digunakan oleh TF-IDF.
-4. **Membangun Matriks Pivot**:
-   - Membuat matriks pivot pengguna-film untuk Collaborative Filtering.
-
 ### **Alasan Data Preparation**
 - Membersihkan teks memastikan hasil TF-IDF lebih representatif.
 - Menggabungkan fitur memberikan lebih banyak informasi untuk Content-Based Filtering.
-- Matriks pivot diperlukan untuk menghitung kesamaan pengguna dalam Collaborative Filtering.
+- Matriks diperlukan untuk menghitung kesamaan pengguna dalam Collaborative Filtering.
+
+Berikut langkah-langkah Data Preparation untuk masing-masing model:
+
+### **Langkah-langkah Data Preparation untuk Content-Based Filtering**
+
+#### **1. Menggabungkan dan Menyaring Data**
+- **Data Gabungan**: Menggabungkan informasi film dari dua sumber data (`movies_df` dan `credits_df`) berdasarkan kolom `id`.
+- **Pemilihan Kolom Penting**: Mengambil hanya kolom yang relevan, yaitu `id`, `title`, `overview`, `genres`, `keywords`, `cast`, dan `crew`.
+
+#### **2. Membersihkan dan Memformat Data**
+- **Mengonversi Format Data**: 
+  - Genre, kata kunci, pemeran, dan kru yang berbentuk string JSON diubah menjadi daftar (list) untuk mempermudah pengolahan.
+- **Menghapus Nilai Kosong**: Menghapus baris dengan data yang hilang untuk memastikan kelengkapan informasi.
+- **Ekstraksi Data Penting**:
+  - Mengambil nama sutradara dari kru (`crew`).
+  - Menghapus spasi dari setiap elemen di daftar genre, kata kunci, pemeran, dan kru untuk menjaga konsistensi data.
+
+#### **3. Menggabungkan Fitur**
+- Semua informasi penting seperti ringkasan (`overview`), genre, kata kunci, pemeran, dan kru digabung menjadi satu kolom fitur tunggal (`features`) untuk setiap film.
+
+#### **4. Representasi Numerik dengan TF-IDF**
+- **Teknik TF-IDF**: Mengubah teks dalam kolom `features` menjadi vektor numerik menggunakan metode TF-IDF.
+  - Kata-kata yang sering muncul di seluruh dokumen (film) mendapat bobot rendah.
+  - Hanya 5000 kata paling relevan yang dipertimbangkan.
+
+#### **5. Menghitung Kemiripan Antarfilm**
+- **Cosine Similarity**:
+  - Menghitung tingkat kemiripan antarfilm berdasarkan vektor fitur TF-IDF.
+  - Hasilnya adalah matriks cosine similarity, di mana setiap elemen mewakili tingkat kemiripan antara dua film.
+
+#### **6. Hasil Akhir**
+- Matriks cosine similarity yang dihasilkan dapat digunakan untuk:
+  - Menemukan film-film yang mirip dengan film tertentu.
+  - Membuat rekomendasi film berdasarkan konten seperti genre, kata kunci, dan pemeran.
+
+---
+
+### **Langkah-langkah Data Preparation untuk Collaborative-Based Filtering dengan TruncatedSVD untuk Reduksi Data**
+
+#### 1. **Pembersihan Data (Data Cleaning):**
+- Langkah pertama adalah menghapus baris yang memiliki nilai kosong (NaN) pada kolom-kolom penting seperti userId, movieId, dan rating dalam dataset ratings_df.
+- Ini bertujuan untuk memastikan bahwa hanya data yang lengkap dan valid yang digunakan dalam proses selanjutnya.
+
+#### 2. **Penyelarasan Tipe Data (Data Type Consistency):**
+- Setelah memastikan tidak ada data kosong, bagian mengonversi kolom userId dan movieId dalam ratings_df menjadi tipe data integer.
+- Ini memastikan bahwa data tersebut dapat diproses dengan benar dalam algoritma pemrosesan selanjutnya.
+
+#### 3. **Sinkronisasi ID di Dataset Film (movies_df):**
+- bagian ini kemudian memastikan bahwa kolom id pada movies_df (dataset film) berisi data numerik yang valid.
+- Hal ini dilakukan dengan mengonversi kolom id menjadi numerik, menghapus baris yang memiliki nilai kosong pada kolom tersebut, dan memastikan bahwa tipe data ID film adalah integer.
+
+#### 4. **Pembuatan Matriks Sparse:**
+- Selanjutnya, bagian membuat sebuah matriks sparse (csr_matrix) yang merepresentasikan rating yang diberikan oleh pengguna terhadap film. Matriks sparse ini hanya menyimpan nilai rating yang ada, sedangkan elemen-elemen lainnya (yang tidak diisi) disimpan secara efisien tanpa menggunakan ruang memori yang besar.
+Selain itu, kode ini menyesuaikan indeks pengguna (userId) untuk dimulai dari 0, karena dalam Python indeks dimulai dari 0, sedangkan ID pengguna dalam dataset mungkin dimulai dari 1.
+
+#### 5. **Informasi Matriks yang Dihasilkan:**
+- Setelah matriks sparse berhasil dibuat, bagian ini menampilkan informasi mengenai keberhasilan pembuatan matriks dan menunjukkan ukuran matriks tersebut, yang menggambarkan jumlah pengguna dan film yang ada.
+
+---
+
+### **Data Preparation untuk Collaborative-Based Filtering Menggunakan Matrix Factorization SVD & Hybrid-Recomendation**
+- untuk Data Preparation pada **Model Collaborative-Based Filtering Menggunakan Matrix Factorization SVD** dan **Model Hybrid-Recomendation** menggunakan data preparation yang sudah di lakukan pada tahap sebelumnya.
 
 ---
 
 ## **5. Modeling**
 
 ### **Content-Based Filtering**
-1. **TF-IDF** digunakan untuk merepresentasikan teks dalam bentuk vektor.
-2. **Cosine Similarity** digunakan untuk menghitung kesamaan antar film.
-3. Hyperparameter TF-IDF:
-   - `max_features=5000`: Membatasi jumlah fitur untuk menghindari overfitting.
-   - `ngram_range=(1, 2)`: Menggunakan unigram dan bigram untuk menangkap konteks yang lebih luas.
-   - `stop_words='english'`: Menghilangkan kata-kata umum yang tidak relevan.
+
+## 1. Content-Based Filtering
+
+**Content-Based Filtering** adalah metode dalam sistem rekomendasi yang menyarankan item berdasarkan **fitur konten** dari item tersebut. Dalam konteks film, fitur konten bisa berupa:
+
+- **Genre** film (misalnya: aksi, drama, komedi).
+- **Deskripsi** atau sinopsis film.
+- **Tag** atau label yang menggambarkan tema film (misalnya: horor, thriller).
+- **Pemeran** atau sutradara.
+
+### Prinsip Dasar:
+Content-Based Filtering berfokus pada kemiripan **fitur konten** antara item yang sudah dikenal oleh pengguna dan item lainnya dalam dataset. **Jika pengguna menyukai suatu item**, mereka kemungkinan besar akan menyukai item lain yang memiliki kemiripan konten yang tinggi.
+
+### Proses Content-Based Filtering:
+1. **Penyusunan Fitur Item:** Setiap item (misalnya film) digambarkan dengan fitur-fitur numerik, seperti genre, tag, atau deskripsi.
+2. **Pengukuran Kemiripan:** Menggunakan metode matematis untuk mengukur kemiripan antara item yang satu dengan yang lain, umumnya dengan **cosine similarity**.
+3. **Rekomendasi:** Berdasarkan kemiripan ini, sistem akan merekomendasikan item yang paling mirip dengan item yang telah disukai atau dipilih oleh pengguna.
+
+### Kelebihan:
+- Tidak memerlukan data perilaku pengguna (misalnya klik atau rating).
+- Sistem rekomendasi lebih berbasis konten item itu sendiri.
+
+### Kekurangan:
+- **Masalah "cold start"**: Sulit memberikan rekomendasi untuk item yang baru karena mereka belum memiliki cukup informasi.
+- Terbatas pada **fitur yang ada**: Hanya fitur yang tersedia dalam dataset yang dapat digunakan untuk perbandingan.
+
+---
+
+## 2. Cosine Similarity
+
+**Cosine Similarity** adalah metode matematis yang digunakan untuk mengukur kemiripan antara dua vektor dalam ruang berdimensi tinggi. Ini mengukur **seberapa dekat arah dua vektor**, tanpa memperhatikan panjang vektor tersebut.
+
+### Rumus Cosine Similarity:
+\[
+\text{Cosine Similarity} = \frac{A \cdot B}{\|A\| \|B\|}
+\]
+
+- **A · B**: Produk titik (dot product) antara dua vektor A dan B.
+- **‖A‖** dan **‖B‖: Norma (panjang) dari vektor A dan B.
+
+### Interpretasi Cosine Similarity:
+- **1**: Kedua vektor memiliki arah yang sama (sangat mirip).
+- **0**: Kedua vektor tidak memiliki arah yang sama (tidak mirip).
+- **-1**: Kedua vektor memiliki arah yang berlawanan (sangat berbeda).
+
+### Penerapan dalam Sistem Rekomendasi:
+Setiap item (misalnya film) digambarkan oleh vektor fitur. Cosine similarity digunakan untuk mengukur seberapa mirip dua item berdasarkan vektor fitur mereka. Misalnya, dua film yang memiliki genre yang sama atau pemeran yang sama akan memiliki skor cosine similarity yang lebih tinggi, menunjukkan bahwa film tersebut mirip.
+
+---
+
+## 3. Langkah-langkah Kerja Sistem dalam Kode
+
+### Langkah-langkah:
+1. **Input dari Pengguna:** Sistem menerima judul film yang diminta oleh pengguna.
+2. **Pencarian Film:** Sistem mencari film tersebut di dalam dataset berdasarkan **judul yang telah diubah menjadi huruf kecil** untuk mencocokkan tanpa memandang kapitalisasi huruf.
+3. **Validasi Cosine Similarity:** Sistem memastikan bahwa **matriks cosine similarity** sudah dihitung sebelumnya, yang berisi nilai kemiripan antara film satu dengan yang lain.
+4. **Penghitungan Kemiripan:** Sistem mencari skor kesamaan antara film yang diminta dan film lainnya dalam dataset menggunakan **cosine similarity**.
+5. **Rekomendasi:** Film yang memiliki skor kesamaan tertinggi akan direkomendasikan kepada pengguna.
+
+### Contoh:
+Misalkan kita memiliki dua film dengan vektor fitur berikut:
+
+- **Film 1 (Vektor A):** [0, 1, 0, 1, 0] (Aksi, Drama)
+- **Film 2 (Vektor B):** [0, 1, 1, 0, 0] (Drama, Komedi)
+
+Maka kita dapat menghitung **cosine similarity** antara kedua film tersebut untuk menentukan seberapa mirip mereka.
+
+---
+
+## 4. Kelebihan dan Kekurangan Content-Based Filtering
+
+### Kelebihan:
+- **Tidak bergantung pada data pengguna:** Hanya membutuhkan data konten item itu sendiri.
+- **Rekomendasi yang personal:** Dapat memberikan rekomendasi yang relevan berdasarkan kesamaan konten.
+
+### Kekurangan:
+- **Masalah "cold start":** Film baru yang tidak memiliki cukup informasi untuk dibandingkan akan sulit untuk direkomendasikan.
+- **Terbatas pada fitur yang ada:** Sistem hanya dapat merekomendasikan item berdasarkan fitur yang tersedia dalam dataset, jadi jika fitur yang digunakan tidak lengkap, rekomendasi juga bisa terbatas.
+
+---
+
+## Ringkasan Proses Teoritis:
+1. **Representasi Item:** Setiap item diwakili oleh vektor fitur.
+2. **Pengukuran Kemiripan:** Cosine similarity digunakan untuk mengukur kemiripan antara item berdasarkan vektor fitur.
+3. **Rekomendasi:** Item yang paling mirip dengan item yang sudah disukai oleh pengguna akan direkomendasikan.
+
+Content-Based Filtering menggunakan **cosine similarity** untuk mengukur kedekatan antara item berdasarkan konten mereka, dan memberikan rekomendasi berdasarkan kemiripan ini.
+
+
 
 ### **Collaborative Filtering**
 1. **Matriks Kesamaan Pengguna**:
